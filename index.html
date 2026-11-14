@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="en-us">
 
@@ -8,14 +7,14 @@
 
     <title>Mars Canyon - Free First-Person Action Game</title>
 
-    <meta name="description" content="Play Mars Canyon, a free first-person action game set on Mars. Explore a mysterious Martian canyon in this free browser-based Unity game. No downloads required.">
+    <meta name="description" content="Play Mars Canyon, a free first-person action game set on Mars. Avoid enemy drones and get back to your mothership in this free browser-based Unity game.">
 
     <meta name="keywords" content="Mars Canyon, free online games, free browser games, first person action game, Mars game, space games, Unity WebGL games, exploration games, sci-fi games">
 
     <meta name="robots" content="index, follow">
 
     <meta property="og:title" content="Mars Canyon - Free First-Person Action Game">
-    <meta property="og:description" content="Explore a mysterious Martian canyon in this free first-person browser game. Play instantly, no download required.">
+    <meta property="og:description" content="Avoid the enemy drones and get back to your mothership in this free first-person action adventure.">
     <meta property="og:type" content="website">
 
     <link rel="stylesheet" href="TemplateData/style.css">
@@ -24,6 +23,7 @@
     <script src="TemplateData/UnityProgress.js"></script>
 
     <style>
+
         body {
             margin: 0;
             background: #171717;
@@ -42,12 +42,34 @@
             box-sizing: border-box;
         }
 
+        /* MAIN IMAGE */
+
+        .hero-frame {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 25px;
+        }
+
         .hero-image {
             width: 100%;
-            max-width: 1000px;
             height: auto;
             display: block;
-            margin-bottom: 25px;
+        }
+
+        /* CINEMATIC VIGNETTE */
+
+        .hero-frame::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background: radial-gradient(
+                ellipse at center,
+                transparent 45%,
+                rgba(0, 0, 0, 0.12) 75%,
+                rgba(0, 0, 0, 0.55) 100%
+            );
         }
 
         .description {
@@ -69,10 +91,12 @@
             margin: 25px auto;
         }
 
+        /* PLAY BUTTON */
+
         .play-button {
             display: inline-block;
             padding: 16px 40px;
-            background: #c65b26;
+            background: #a71924;
             color: white;
             text-decoration: none;
             font-size: 18px;
@@ -83,8 +107,10 @@
         }
 
         .play-button:hover {
-            background: #e87535;
+            background: #cf2633;
         }
+
+        /* UNITY GAME */
 
         #game {
             display: none;
@@ -111,14 +137,17 @@
         }
 
         @media (max-width: 600px) {
+
             .description {
                 font-size: 18px;
             }
 
-            .hero-image {
-                width: 100%;
+            .hero-frame {
+                max-width: 100%;
             }
+
         }
+
     </style>
 </head>
 
@@ -128,11 +157,15 @@
 
 <div id="landing">
 
-    <img
-        src="splash_screen_04.png"
-        class="hero-image"
-        alt="Mars Canyon - A spacecraft exploring a Martian canyon"
-    >
+    <div class="hero-frame">
+
+        <img
+            src="splash_screen_04.png"
+            class="hero-image"
+            alt="Mars Canyon - A spacecraft exploring a Martian canyon"
+        >
+
+    </div>
 
     <p class="description">
         A first-person action game.
@@ -151,7 +184,8 @@
     </a>
 
     <p class="game-description">
-        Avoid the enemy drones and get back to your mothership in this free first-person action adventure.
+        Avoid the enemy drones and get back to your
+        mothership in this free first-person action adventure.
     </p>
 
 </div>
