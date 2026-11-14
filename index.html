@@ -1,105 +1,354 @@
 <!doctype html>
 <html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity WebGL Player | Mars Canyon</title>
-    <link rel="stylesheet" href="TemplateData/style.css">
-    <link rel="shortcut icon" href="TemplateData/favicon.ico" />
-    <script src="TemplateData/UnityProgress.js"></script>
-  </head>
-  <body class="template">
-    <p class="header"><span>Unity WebGL Player | </span>Mars Canyon</p>
-    <div class="template-wrap clear">
-    <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" height="600px" width="960px"></canvas>
-      <div class="logo"></div>
-      <div class="fullscreen"><img src="TemplateData/fullscreen.png" width="38" height="38" alt="Fullscreen" title="Fullscreen" onclick="SetFullscreen(1);" /></div>
-      <div class="title">Mars Canyon</div>
-    </div>
-    <p class="footer">&laquo; created with <a href="http://unity3d.com/" title="Go to unity3d.com">Unity</a> &raquo;</p>
-    <script type='text/javascript'>
-  // connect to canvas
-  var Module = {
-    TOTAL_MEMORY: 268435456,
-    filePackagePrefixURL: "Release/",
-    memoryInitializerPrefixURL: "Release/",
-    preRun: [],
-    postRun: [],
-    print: (function() {
-      return function(text) {
-        console.log (text);
-      };
-    })(),
-    printErr: function(text) {
-      console.error (text);
-    },
-    canvas: document.getElementById('canvas'),
-    progress: null,
-    setStatus: function(text) {
-      if (this.progress == null) 
-      {
-        if (typeof UnityProgress != 'function')
-          return;
-        this.progress = new UnityProgress (canvas);
-      }
-      if (!Module.setStatus.last) Module.setStatus.last = { time: Date.now(), text: '' };
-      if (text === Module.setStatus.text) return;
-      this.progress.SetMessage (text);
-      var m = text.match(/([^(]+)\((\d+(\.\d+)?)\/(\d+)\)/);
-      if (m)
-        this.progress.SetProgress (parseInt(m[2])/parseInt(m[4]));
-      if (text === "") 
-        this.progress.Clear()
-    },
-    totalDependencies: 0,
-    monitorRunDependencies: function(left) {
-      this.totalDependencies = Math.max(this.totalDependencies, left);
-      Module.setStatus(left ? 'Preparing... (' + (this.totalDependencies-left) + '/' + this.totalDependencies + ')' : 'All downloads complete.');
-    }
-  };
-  Module.setStatus('Downloading (0.0/1)');
-</script>
-<script src="Release/UnityConfig.js"></script>
-<script src="Release/fileloader.js"></script>
-<script>if (!(!Math.fround)) {
-  var script = document.createElement('script');
-  script.src = "Release/WebGame.js";
-  document.body.appendChild(script);
-} else {
-  var codeXHR = new XMLHttpRequest();
-  codeXHR.open('GET', 'Release/WebGame.js', true);
-  codeXHR.onload = function() {
-    var code = codeXHR.responseText;
-    if (!Math.fround) { 
-try {
-  console.log('optimizing out Math.fround calls');
-  var m = /var ([^=]+)=global\.Math\.fround;/.exec(code);
-  var minified = m[1];
-  if (!minified) throw 'fail';
-  var startAsm = code.indexOf('// EMSCRIPTEN_START_FUNCS');
-  var endAsm = code.indexOf('// EMSCRIPTEN_END_FUNCS');
-  var asm = code.substring(startAsm, endAsm);
-  do {
-    var moar = false; // we need to re-do, as x(x( will not be fixed
-    asm = asm.replace(new RegExp('[^a-zA-Z0-9\\$\\_]' + minified + '\\(', 'g'), function(s) { moar = true; return s[0] + '(' });
-  } while (moar);
-  code = code.substring(0, startAsm) + asm + code.substring(endAsm);
-  code = code.replace("'use asm'", "'almost asm'");
-} catch(e) { console.log('failed to optimize out Math.fround calls ' + e) }
- }
 
-    var blob = new Blob([code], { type: 'text/javascript' });
-    codeXHR = null;
-    var src = URL.createObjectURL(blob);
-    var script = document.createElement('script');
-    script.src = URL.createObjectURL(blob);
-    script.onload = function() {
-      URL.revokeObjectURL(script.src);
-    };
-    document.body.appendChild(script);
-  };
-  codeXHR.send(null);
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Mars Canyon - Free First-Person Action Game</title>
+
+    <meta name="description" content="Play Mars Canyon, a free first-person action game set on Mars. Explore a mysterious Martian canyon in this free browser-based Unity game. No downloads required.">
+
+    <meta name="keywords" content="Mars Canyon, free online games, free browser games, first person action game, Mars game, space games, Unity WebGL games, exploration games, sci-fi games">
+
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:title" content="Mars Canyon - Free First-Person Action Game">
+    <meta property="og:description" content="Explore a mysterious Martian canyon in this free first-person browser game. Play instantly, no download required.">
+    <meta property="og:type" content="website">
+
+    <link rel="stylesheet" href="TemplateData/style.css">
+    <link rel="shortcut icon" href="TemplateData/favicon.ico">
+
+    <script src="TemplateData/UnityProgress.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            background: #171717;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+
+        #landing {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            font-size: 48px;
+            letter-spacing: 4px;
+            margin-bottom: 10px;
+        }
+
+        .description {
+            font-size: 20px;
+            color: #ccc;
+            margin-bottom: 35px;
+        }
+
+        .controls {
+            color: #aaa;
+            line-height: 1.8;
+            margin-bottom: 35px;
+        }
+
+        .game-description {
+            color: #aaa;
+            max-width: 550px;
+            line-height: 1.7;
+            margin: 25px auto;
+        }
+
+        .play-button {
+            display: inline-block;
+            padding: 16px 40px;
+            background: #c65b26;
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .play-button:hover {
+            background: #e87535;
+        }
+
+        #game {
+            display: none;
+            padding-top: 20px;
+        }
+
+        #game .template-wrap {
+            margin: auto;
+        }
+
+        #game canvas {
+            max-width: 100%;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin: 15px;
+            color: #ccc;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            color: white;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 34px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- LANDING PAGE -->
+
+<div id="landing">
+
+    <h1>MARS CANYON</h1>
+
+    <p class="description">
+        A first-person action game.
+    </p>
+
+    <div class="controls">
+        <strong>CONTROLS</strong><br>
+        Move: Arrow keys<br>
+        Look: Mouse<br>
+        No jumping or shooting required.
+    </div>
+
+    <a class="play-button" href="#play" onclick="startGame(); return false;">
+        PLAY MARS CANYON
+    </a>
+
+    <p class="game-description">
+        A mysterious Martian landscape awaits.
+        Explore the canyon, navigate dangerous terrain
+        and uncover the secrets of Mars in this free
+        first-person action adventure.
+    </p>
+
+</div>
+
+
+<!-- UNITY GAME -->
+
+<div id="game">
+
+    <a href="#" class="back-link" onclick="return showLanding()">
+        &larr; Back to main page
+    </a>
+
+    <div class="template-wrap clear">
+
+        <canvas class="emscripten" id="canvas"
+            oncontextmenu="event.preventDefault()"
+            height="600" width="960">
+        </canvas>
+
+        <div class="logo"></div>
+
+        <div class="fullscreen">
+            <img src="TemplateData/fullscreen.png"
+                width="38" height="38"
+                alt="Fullscreen"
+                title="Fullscreen"
+                onclick="SetFullscreen(1);" />
+        </div>
+
+        <div class="title">Mars Canyon</div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+var gameStarted = false;
+
+function startGame() {
+
+    document.getElementById("landing").style.display = "none";
+    document.getElementById("game").style.display = "block";
+
+    if (!gameStarted) {
+        gameStarted = true;
+        loadUnity();
+    }
 }
+
+function showLanding() {
+
+    document.getElementById("game").style.display = "none";
+    document.getElementById("landing").style.display = "flex";
+
+    return false;
+}
+
+function loadUnity() {
+
+    var Module = {
+        TOTAL_MEMORY: 268435456,
+        filePackagePrefixURL: "Release/",
+        memoryInitializerPrefixURL: "Release/",
+        preRun: [],
+        postRun: [],
+
+        print: function(text) {
+            console.log(text);
+        },
+
+        printErr: function(text) {
+            console.error(text);
+        },
+
+        canvas: document.getElementById('canvas'),
+        progress: null,
+
+        setStatus: function(text) {
+
+            if (this.progress == null) {
+                if (typeof UnityProgress != 'function')
+                    return;
+
+                this.progress = new UnityProgress(this.canvas);
+            }
+
+            if (!Module.setStatus.last)
+                Module.setStatus.last = { time: Date.now(), text: '' };
+
+            if (text === Module.setStatus.text) return;
+
+            this.progress.SetMessage(text);
+
+            var m = text.match(/([^(]+)\((\d+(\.\d+)?)\/(\d+)\)/);
+
+            if (m)
+                this.progress.SetProgress(parseInt(m[2])/parseInt(m[4]));
+
+            if (text === "")
+                this.progress.Clear();
+        },
+
+        totalDependencies: 0,
+
+        monitorRunDependencies: function(left) {
+
+            this.totalDependencies = Math.max(this.totalDependencies, left);
+
+            Module.setStatus(
+                left ?
+                'Preparing... (' +
+                (this.totalDependencies-left) + '/' +
+                this.totalDependencies + ')' :
+                'All downloads complete.'
+            );
+        }
+    };
+
+    Module.setStatus('Downloading (0.0/1)');
+
+    window.Module = Module;
+
+    var config = document.createElement('script');
+    config.src = "Release/UnityConfig.js";
+    document.body.appendChild(config);
+
+    var loader = document.createElement('script');
+    loader.src = "Release/fileloader.js";
+    document.body.appendChild(loader);
+
+    var script = document.createElement('script');
+
+    if (!(!Math.fround)) {
+
+        script.src = "Release/WebGame.js";
+        document.body.appendChild(script);
+
+    } else {
+
+        var codeXHR = new XMLHttpRequest();
+
+        codeXHR.open('GET', 'Release/WebGame.js', true);
+
+        codeXHR.onload = function() {
+
+            var code = codeXHR.responseText;
+
+            if (!Math.fround) {
+                try {
+                    console.log('optimizing out Math.fround calls');
+
+                    var m = /var ([^=]+)=global\.Math\.fround;/.exec(code);
+                    var minified = m[1];
+
+                    if (!minified) throw 'fail';
+
+                    var startAsm = code.indexOf('// EMSCRIPTEN_START_FUNCS');
+                    var endAsm = code.indexOf('// EMSCRIPTEN_END_FUNCS');
+
+                    var asm = code.substring(startAsm, endAsm);
+
+                    do {
+                        var moar = false;
+
+                        asm = asm.replace(
+                            new RegExp('[^a-zA-Z0-9\\$\\_]' + minified + '\\(', 'g'),
+                            function(s) {
+                                moar = true;
+                                return s[0] + '(';
+                            }
+                        );
+
+                    } while (moar);
+
+                    code = code.substring(0, startAsm) +
+                        asm + code.substring(endAsm);
+
+                    code = code.replace("'use asm'", "'almost asm'");
+
+                } catch(e) {
+                    console.log('failed to optimize out Math.fround calls ' + e);
+                }
+            }
+
+            var blob = new Blob([code], {
+                type: 'text/javascript'
+            });
+
+            var src = URL.createObjectURL(blob);
+            script.src = src;
+
+            script.onload = function() {
+                URL.revokeObjectURL(src);
+            };
+
+            document.body.appendChild(script);
+        };
+
+        codeXHR.send(null);
+    }
+}
+
 </script>
-  </body>
+
+</body>
 </html>
