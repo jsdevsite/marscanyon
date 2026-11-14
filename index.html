@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en-us">
 
@@ -37,26 +38,34 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 30px 20px;
             box-sizing: border-box;
         }
 
+        .hero-image {
+            width: 320px;
+            max-width: 85vw;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
         h1 {
-            font-size: 48px;
+            font-size: 42px;
             letter-spacing: 4px;
-            margin-bottom: 10px;
+            margin: 5px 0 10px;
         }
 
         .description {
             font-size: 20px;
             color: #ccc;
-            margin-bottom: 35px;
+            margin-bottom: 30px;
         }
 
         .controls {
             color: #aaa;
             line-height: 1.8;
-            margin-bottom: 35px;
+            margin-bottom: 30px;
         }
 
         .game-description {
@@ -109,7 +118,11 @@
 
         @media (max-width: 600px) {
             h1 {
-                font-size: 34px;
+                font-size: 32px;
+            }
+
+            .hero-image {
+                width: 280px;
             }
         }
     </style>
@@ -120,6 +133,12 @@
 <!-- LANDING PAGE -->
 
 <div id="landing">
+
+    <img
+        src="mars_canyon_logo.png"
+        class="hero-image"
+        alt="Mars Canyon - Martian spacecraft and canyon artwork"
+    >
 
     <h1>MARS CANYON</h1>
 
@@ -134,7 +153,8 @@
         No jumping or shooting required.
     </div>
 
-    <a class="play-button" href="#play" onclick="startGame(); return false;">
+    <a class="play-button" href="#play"
+       onclick="startGame(); return false;">
         PLAY MARS CANYON
     </a>
 
@@ -152,7 +172,8 @@
 
 <div id="game">
 
-    <a href="#" class="back-link" onclick="return showLanding()">
+    <a href="#" class="back-link"
+       onclick="return showLanding()">
         &larr; Back to main page
     </a>
 
